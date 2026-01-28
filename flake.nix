@@ -5,8 +5,8 @@
     { ... }:
     {
       templates = {
-        base = {
-          path = ./base;
+        default = {
+          path = ./default;
           description = "Basic flake-parts template with treefmt-nix";
         };
         python = {

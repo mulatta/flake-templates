@@ -20,5 +20,14 @@
         ./nix/formatter.nix
         ./nix/shell.nix
       ];
+
+      perSystem =
+        { system, ... }:
+        {
+          _module.args.pkgs = import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        };
     };
 }

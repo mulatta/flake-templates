@@ -17,6 +17,14 @@
           path = ./rust;
           description = "Rust project with rust-overlay";
         };
+        uv = {
+          path = ./uv;
+          description = "Python project with uv package manager";
+        };
+        uv2nix = {
+          path = ./uv2nix;
+          description = "Python project with uv2nix for reproducible Nix builds";
+        };
       };
     };
 }

@@ -19,6 +19,9 @@
             fi
             uv sync --quiet
           fi
+
+          export VIRTUAL_ENV="$PWD/.venv"
+          export PATH="$VIRTUAL_ENV/bin:$PATH"
         '';
       };
     };

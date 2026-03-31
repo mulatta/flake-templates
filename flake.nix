@@ -29,6 +29,10 @@
           path = ./nix-shell;
           description = "Non-flake nix-shell with direnv";
         };
+        pixi = {
+          path = ./pixi;
+          description = "Scientific projet with pixi for complex dependnecies";
+        };
       };
     };
 }

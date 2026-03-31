@@ -1,0 +1,10 @@
+[workspace]
+authors = ["mulatta <67085791+mulatta@users.noreply.github.com>"]
+channels = ["conda-forge"]
+name = "pixi"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]

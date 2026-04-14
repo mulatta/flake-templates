@@ -21,10 +21,6 @@
           path = ./uv;
           description = "Python project with uv package manager";
         };
-        uv2nix = {
-          path = ./uv2nix;
-          description = "Python project with uv2nix for reproducible Nix builds";
-        };
         nix-shell = {
           path = ./nix-shell;
           description = "Non-flake nix-shell with direnv";

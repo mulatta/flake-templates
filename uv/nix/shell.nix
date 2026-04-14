@@ -1,6 +1,10 @@
 {
   perSystem =
-    { pkgs, ... }:
+    {
+      pkgs,
+      lib,
+      ...
+    }:
     {
       devShells.default = pkgs.mkShell {
         packages = with pkgs; [
@@ -10,18 +14,22 @@
 
         env = {
           UV_PYTHON_DOWNLOADS = "never";
+          LD_LIBRARY_PATH = lib.makeLibraryPath (
+            [
+              pkgs.stdenv.cc.cc.lib
+              pkgs.zlib
+            ]
+            ++ lib.optional pkgs.stdenv.isLinux pkgs.addDriverRunpath.driverLink
+          );
         };
 
         shellHook = ''
-          if [ -f pyproject.toml ]; then
-            if [[ ! -f "uv.lock" ]] || [[ "pyproject.toml" -nt "uv.lock" ]]; then
-              uv lock --quiet
-            fi
-            uv sync --quiet
+          if ! root=$(git rev-parse --show-toplevel 2>/dev/null); then
+            echo "warning: not in a git repo, using PWD" >&2
+            root=$PWD
           fi
-
-          export VIRTUAL_ENV="$PWD/.venv"
-          export PATH="$VIRTUAL_ENV/bin:$PATH"
+          uv sync --frozen --quiet
+          source "$root/.venv/bin/activate"
         '';
       };
     };

@@ -3,8 +3,6 @@
 
   inputs = {
     # keep-sorted start
-    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
-    flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     treefmt-nix.url = "github:numtide/treefmt-nix";
@@ -12,25 +10,51 @@
   };
 
   outputs =
-    inputs@{ flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
+    {
+      self,
+      nixpkgs,
+      treefmt-nix,
+    }:
+    let
       systems = [
         "x86_64-linux"
         "aarch64-linux"
         "aarch64-darwin"
       ];
-      imports = [
-        ./nix/formatter.nix
-        ./nix/shell.nix
-      ];
 
-      perSystem =
+      lib = nixpkgs.lib;
+
+      eachSystem =
+        f:
+        lib.genAttrs systems (
+          system:
+          f {
+            inherit system;
+            pkgs = nixpkgs.legacyPackages.${system};
+          }
+        );
+
+      treefmtEval = eachSystem (
+        { pkgs, ... }:
+        treefmt-nix.lib.evalModule pkgs {
+          projectRootFile = "flake.nix";
+          programs = {
+            deadnix.enable = true;
+            keep-sorted.enable = true;
+            nixfmt.enable = true;
+            statix.enable = true;
+          };
+        }
+      );
+    in
+    {
+      checks = eachSystem (
         { system, ... }:
         {
-          _module.args.pkgs = import inputs.nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-          };
-        };
+          formatting = treefmtEval.${system}.config.build.check self;
+        }
+      );
+
+      formatter = eachSystem ({ system, ... }: treefmtEval.${system}.config.build.wrapper);
     };
 }

@@ -7,6 +7,10 @@
       templates = {
         default = {
           path = ./default;
+          description = "Lightweight flake with treefmt-nix";
+        };
+        flake-parts = {
+          path = ./flake-parts;
           description = "Basic flake-parts template with treefmt-nix";
         };
         python = {

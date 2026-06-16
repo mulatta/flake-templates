@@ -22,11 +22,9 @@
         "aarch64-darwin"
       ];
 
-      lib = nixpkgs.lib;
-
       eachSystem =
         f:
-        lib.genAttrs systems (
+        nixpkgs.lib.genAttrs systems (
           system:
           f {
             inherit system;

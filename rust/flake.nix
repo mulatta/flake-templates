@@ -2,7 +2,6 @@
   description = "PROJ_NAME";
 
   inputs = {
-    # keep-sorted start
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -10,7 +9,6 @@
     rust-overlay.url = "github:oxalica/rust-overlay";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    # keep-sorted end
   };
 
   outputs =

@@ -2,11 +2,9 @@
   description = "PROJ_NAME";
 
   inputs = {
-    # keep-sorted start
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    # keep-sorted end
   };
 
   outputs =
@@ -38,7 +36,6 @@
           projectRootFile = "flake.nix";
           programs = {
             deadnix.enable = true;
-            keep-sorted.enable = true;
             nixfmt.enable = true;
             statix.enable = true;
           };

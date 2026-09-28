@@ -25,6 +25,10 @@
           path = ./uv2nix;
           description = "Reproducible Python project with uv2nix";
         };
+        cuda = {
+          path = ./cuda;
+          description = "Python ML project with uv2nix and CUDA wheel support";
+        };
         nix-shell = {
           path = ./nix-shell;
           description = "Non-flake nix-shell with direnv";

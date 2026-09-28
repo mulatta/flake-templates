@@ -20,19 +20,15 @@
         "aarch64-darwin"
       ];
 
-      eachSystem =
-        f:
-        nixpkgs.lib.genAttrs systems (
-          system:
-          f {
-            inherit system;
-            pkgs = nixpkgs.legacyPackages.${system};
-          }
-        );
+      inherit (nixpkgs) lib;
+
+      eachSystem = lib.genAttrs systems;
+
+      pkgsFor = eachSystem (system: import nixpkgs { inherit system; });
 
       treefmtEval = eachSystem (
-        { pkgs, ... }:
-        treefmt-nix.lib.evalModule pkgs {
+        system:
+        treefmt-nix.lib.evalModule pkgsFor.${system} {
           projectRootFile = "flake.nix";
           programs = {
             deadnix.enable = true;
@@ -43,13 +39,10 @@
       );
     in
     {
-      checks = eachSystem (
-        { system, ... }:
-        {
-          formatting = treefmtEval.${system}.config.build.check self;
-        }
-      );
+      checks = eachSystem (system: {
+        formatting = treefmtEval.${system}.config.build.check self;
+      });
 
-      formatter = eachSystem ({ system, ... }: treefmtEval.${system}.config.build.wrapper);
+      formatter = eachSystem (system: treefmtEval.${system}.config.build.wrapper);
     };
 }

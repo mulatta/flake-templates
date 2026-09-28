@@ -9,10 +9,6 @@
           path = ./default;
           description = "Lightweight flake with treefmt-nix";
         };
-        flake-parts = {
-          path = ./flake-parts;
-          description = "Basic flake-parts template with treefmt-nix";
-        };
         python = {
           path = ./python;
           description = "Python project with venv and ruff";
